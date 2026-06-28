@@ -1,4 +1,3 @@
-import { A } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 
@@ -9,20 +8,20 @@ export default function App() {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between h-16">
             <div class="flex items-center">
-              <A href="/" class="text-xl font-bold text-blue-600">
+              <a href="/" class="text-xl font-bold text-blue-600">
                 SupplyAtlas
-              </A>
+              </a>
             </div>
             <div class="flex items-center space-x-4">
-              <A href="/themes" class="text-gray-700 hover:text-blue-600">
+              <a href="/themes" class="text-gray-700 hover:text-blue-600">
                 Themes
-              </A>
-              <A href="/watchlist" class="text-gray-700 hover:text-blue-600">
+              </a>
+              <a href="/watchlist" class="text-gray-700 hover:text-blue-600">
                 Watchlist
-              </A>
-              <A href="/admin" class="text-gray-700 hover:text-blue-600">
+              </a>
+              <a href="/admin" class="text-gray-700 hover:text-blue-600">
                 Admin
-              </A>
+              </a>
             </div>
           </div>
         </div>
