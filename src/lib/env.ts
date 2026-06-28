@@ -81,3 +81,16 @@ export function getIngestionEnv(): IngestionEnv {
 export function getOptionalEnv(): OptionalEnv {
   return validateEnv(optionalEnvSchema, process.env);
 }
+
+export function isDatabaseConfigured(): boolean {
+  return !!(process.env.DATABASE_URL && process.env.DIRECT_DATABASE_URL);
+}
+
+export function isAuthConfigured(): boolean {
+  return !!(
+    process.env.BETTER_AUTH_SECRET &&
+    process.env.BETTER_AUTH_URL &&
+    process.env.GOOGLE_CLIENT_ID &&
+    process.env.GOOGLE_CLIENT_SECRET
+  );
+}

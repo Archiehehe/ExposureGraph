@@ -15,7 +15,6 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:check": "drizzle-kit check",
-    "seed:ai-datacenter": "tsx scripts/seed/seed-ai-datacenter.ts",
     "ingest:companies": "tsx scripts/ingestion/ingest-companies.ts",
     "ingest:market-data": "tsx scripts/ingestion/ingest-market-data.ts",
     "ingest:financials": "tsx scripts/ingestion/ingest-financials.ts",

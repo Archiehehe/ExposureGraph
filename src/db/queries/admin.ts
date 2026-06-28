@@ -1,4 +1,4 @@
-import { db } from "../client";
+import { getDb } from "../client";
 import { candidateEdges } from "../schema";
 import { eq } from "drizzle-orm";
 
@@ -11,6 +11,9 @@ export async function createCandidateEdge(data: {
   sourceDocumentId?: string;
   extractionMethod?: string;
 }) {
+  const db = getDb();
+  if (!db) return null;
+
   const [edge] = await db.insert(candidateEdges).values(data).returning();
   return edge;
 }
@@ -19,6 +22,9 @@ export async function approveCandidateEdge(
   candidateEdgeId: string,
   reviewedBy: string
 ) {
+  const db = getDb();
+  if (!db) return null;
+
   const [edge] = await db
     .update(candidateEdges)
     .set({
@@ -36,6 +42,9 @@ export async function rejectCandidateEdge(
   reviewedBy: string,
   reviewNotes?: string
 ) {
+  const db = getDb();
+  if (!db) return null;
+
   const [edge] = await db
     .update(candidateEdges)
     .set({

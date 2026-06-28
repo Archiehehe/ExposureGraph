@@ -1,8 +1,11 @@
-import { db } from "../client";
-import { companies, companyIdentifiers } from "../schema";
+import { getDb } from "../client";
+import { companies, companyIdentifiers, companyExposures, themes } from "../schema";
 import { eq, and } from "drizzle-orm";
 
 export async function getCompanyByTicker(ticker: string) {
+  const db = getDb();
+  if (!db) return null;
+
   const [identifier] = await db
     .select()
     .from(companyIdentifiers)
@@ -18,6 +21,20 @@ export async function getCompanyByTicker(ticker: string) {
 }
 
 export async function getCompanyExposures(companyId: string) {
-  // TODO: Implement after creating companyExposures query
-  return [];
+  const db = getDb();
+  if (!db) return [];
+
+  const rows = await db
+    .select({
+      exposureType: companyExposures.exposureType,
+      exposureScore: companyExposures.exposureScore,
+      description: companyExposures.description,
+      themeSlug: themes.slug,
+      themeName: themes.name,
+    })
+    .from(companyExposures)
+    .innerJoin(themes, eq(companyExposures.themeId, themes.id))
+    .where(eq(companyExposures.companyId, companyId));
+
+  return rows;
 }

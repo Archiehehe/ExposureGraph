@@ -1,16 +1,27 @@
-import { db } from "../client";
+import { getDb } from "../client";
 import { nodes, edges, themes } from "../schema";
-import { eq } from "drizzle-orm";
+import { eq, and, inArray } from "drizzle-orm";
 
 export async function getThemeGraphBySlug(slug: string) {
-  const theme = await db.select().from(themes).where(eq(themes.slug, slug)).limit(1);
-  if (!theme.length) return null;
-  const themeNodes = await db.select().from(nodes).where(eq(nodes.themeId, theme[0].id));
+  const db = getDb();
+  if (!db) return null;
+
+  const [theme] = await db.select().from(themes).where(eq(themes.slug, slug)).limit(1);
+  if (!theme) return null;
+
+  const themeNodes = await db.select().from(nodes).where(eq(nodes.themeId, theme.id));
   const nodeIds = themeNodes.map((n) => n.id);
-  const themeEdges = await db.select().from(edges).where(eq(edges.published, true));
+
+  const themeEdges = nodeIds.length > 0
+    ? await db
+        .select()
+        .from(edges)
+        .where(and(eq(edges.published, true), inArray(edges.sourceNodeId, nodeIds), inArray(edges.targetNodeId, nodeIds)))
+    : [];
+
   return {
-    theme: theme[0],
+    theme,
     nodes: themeNodes,
-    edges: themeEdges.filter((e) => nodeIds.includes(e.sourceNodeId) && nodeIds.includes(e.targetNodeId)),
+    edges: themeEdges,
   };
 }
